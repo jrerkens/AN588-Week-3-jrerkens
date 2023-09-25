@@ -37,7 +37,7 @@ The number of titi monkey calls in a 2 hour window is represented by X. X ~ Pois
 We can use `ppois()` to find out cumulative probabilities!
 
 ```{r}
-ppois(q = 7, lambda = 15, lower.tail = F) # NOTE lower.tail = F does not include 8, so we must start at 7
+ppois(q = 8, lambda = 15, lower.tail = F) # NOTE lower.tail = F does not include 8, so we must start at 7
 
 ```
 
