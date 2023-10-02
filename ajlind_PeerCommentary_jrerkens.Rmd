@@ -1,0 +1,119 @@
+---
+title: "AN 588 Homework 2"
+author: "Jimmy Erkens"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    number_sections: true
+    toc_float: true
+    code_folding: show
+    prettydoc::html_pretty: cayman
+---
+
+
+![Cute Sleepy Coppery Titi Monkey](https://png.pngtree.com/thumb_back/fw800/background/20221023/pngtree-an-exotic-primate-species-from-south-america-a-closeup-of-a-sleeping-coppery-titia-tropical-red-monkey-photo-image_28510004.jpg)
+
+**You just reminded me I forgot to add a Titi Monkey photo! That is a very cute sleepy titi. -AJL**
+
+# Libraries
+
+Load in the necessary libraries:
+
+```{r}
+library(prettydoc)
+library(yaml)
+library(tidyverse)
+library(tinytex) # install.packages("tinytex") <3
+```
+
+**Very kind and forward-thinking of you to provide the packages, thank you! -AJL**
+
+# Questions
+
+## Initializations
+**I like the nested toc structure. -AJL**
+The number of titi monkey calls in a 2 hour window is represented by X. X ~ Pois($\lambda$ = 15)
+
+## What is the probability that she will hear more than 8 calls during any given session?
+
+We can use `ppois()` to find out cumulative probabilities!
+
+```{r}
+ppois(q = 8, lambda = 15, lower.tail = F) # NOTE lower.tail = F does not include 8, so we must start at 7
+
+```
+
+The probability we hear 8 or more calls is 0.963.
+**We got the same answer but I used 1-ppois instead of changing the lower tail, maybe that helps you? -AJL**
+
+## What is the probability that she will hear no calls in a session?
+
+Again, we can use `ppois()` to find out cumulative probablities!
+
+```{r}
+ppois(q = 0, lambda = 15, lower.tail = T) # 0 or less calls in a session
+```
+
+The probability we hear 0 calls is 3.059 x 10^-7.
+
+## What is the probability that she will hear exactly 3 calls in a session?
+
+**I was really liking the running commentary you had about what function to use and what the final answer is, you should add that here! -AJL**
+
+```{r}
+dpois(x = 3, lambda = 15) # why do we use dpois()
+```
+
+**Here, you're using dpois because you want exactly 3 calls, not a cumulative prob of 3 calls of less. -AJL**
+
+## Plot the relevant Poisson mass function over the values in range 0 ≤ x ≤ 30.
+
+```{r}
+x <- seq(from = 1, to = 30, by = 1) # sequence from 1:30, we're gonna do dpois on each of these values
+plot(dpois(x, lambda = 15)) # plot
+xlab("Number of titi monkey calls in a 2 hour period") # labels
+ylab("Probability")
+title(main = "Theoretical true distribution of titi monkey calls") # title
+```
+**I think you want xlab and ylab= . The labels are not rendering for me and that's what I use with hist. I like the choice to do the sequence by 1, that makes more sense since you can't hear a fraction of a call. -AJL** 
+
+## Simulate 104 results from this distribution (i.e., 2 years of Saturday monitoring sessions).
+
+We're going to use `rpois()` to make this work.
+**I wouldn't mind a bit more explanation of rpois to fit in with how you explained ppois in the beginning - maybe just "we're going to use rpois to generate a random string of call numbers" or something. -AJL**
+
+```{r}
+set.seed(812) # setting a seed, it's my birthday aww how cute
+simulated_titi <- rpois(n = 104, lambda = 15) # we're gonna generate 104 values from a poisson(15)
+```
+
+**Setting a seed is smart so you don't get a different set each time (at least that's what I assume it does maybe you should explain). Also, I would display the simulated_titi so it's visible in the knit. -AJL**
+
+
+## Plot the simulated results using hist() and use xlim() to set the horizontal limits to be from 0 to 30. How does your histogram compare to the shape of the probability mass function you plotted above?
+
+```{r}
+hist(simulated_titi, xlim = range(0:30), breaks = 0:30, col = "steelblue", 
+xlab = "Number of titi calls in a 2 hour period",
+main = "Simulated data of 104 poisson generated titi calls")
+```
+
+**Love the color choice! -AJL**
+
+
+It looks somewhat similar to the theoretical model. However, because this is simulated data, it isn't a perfect match! There are less values at x = 14 than we would expect, for example, and it seems there are a couple outliers.
+
+# Challenges I faced
+
+1. I struggled with my `YAML` because I forgot to put "output:" in my header. I ended up copying and pasting a header I made at an earlier date, and realized my mistake.\ **MY yaml also got me the first few times, I couldn't get the theme to work at first. -AJL**
+\
+2. I was struggling with adding the `cayman` theme to my document. I knit my document a few times and was failing to compile. I eventually pulled up an old stat homework and found the `prettydoc::pretty_html:` syntax.\ **Yes, this is the problem I was just referencing, I found this through googling. Try putting it where the html document is now instead of at the end and then put theme: cayman in a separate line because the theme still isn't showing up in the knit for me. -AJL**
+\
+3. I forgot the exact markdown syntax for inserting an image, so I looked it up and figured it out.\
+\
+4. I needed to check how `lower.tail` functioned to ensure that I was including 8 calls (i.e., is this equal to or greater or just greater). I had to adjust my code because I initally had q = 8; I changed q = 7. \
+\
+5. I forgot `hist()` and `plot()` had different arguments within the function. I had to take `xlab()` etc. and place within `hist()` argument.
+
+**Overall, I think you did great! All the code runs, I was able to knit right away, each step was clear. All my best, Angelique**
