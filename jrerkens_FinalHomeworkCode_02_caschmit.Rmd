@@ -16,7 +16,7 @@ output:
 
 **You just reminded me I forgot to add a Titi Monkey photo! That is a very cute sleepy titi. -AJL**
 
->NOTE: This is a red howler monkey (*Alouatta seniculus*), not a titi monkey (which >are the genera *Plecturocebus*, *Cheracebus*, and *Callicebus*)!  Please take >AN/BI 336 when I next teach it, we'll go over this!
+>NOTE: Soooo this is a red howler monkey (*Alouatta seniculus*), not a titi monkey (which are the genera *Plecturocebus*, *Cheracebus*, and *Callicebus*)!  Please take AN/BI 336 when I next teach it, we'll go over this!
 
 # Libraries
 
@@ -51,15 +51,19 @@ ppois(q = 8, lambda = 15, lower.tail = F) # NOTE lower.tail = F does not include
 The probability we hear 8 or more calls is 0.963.
 **We got the same answer but I used 1-ppois instead of changing the lower tail, maybe that helps you? -AJL**
 
+>Yeah, we get the same answer with 1-ppois, but only if using q = 8. I do think you can use q = 8 with ppois and get to this answer... can you show me the documentation that suggests we'd need to use q = 7? Seems odd to me.
+
 ## What is the probability that she will hear no calls in a session?
 
-Again, we can use `ppois()` to find out cumulative probablities!
+Again, we can use `ppois()` to find out cumulative probabilities!
 
 ```{r}
 ppois(q = 0, lambda = 15, lower.tail = T) # 0 or less calls in a session
 ```
 
 The probability we hear 0 calls is 3.059 x 10^-7.
+
+>This works because ppois is accumulating from 0 to 0, yes. I might recommend dpois as a better choice since this is actually requesting a point value.
 
 ## What is the probability that she will hear exactly 3 calls in a session?
 
@@ -100,14 +104,27 @@ main = "Simulated data of 104 poisson generated titi calls")
 
 It looks somewhat similar to the theoretical model. However, because this is simulated data, it isn't a perfect match! There are less values at x = 14 than we would expect, for example, and it seems there are a couple outliers.
 
+>Nice color choice!
+
 # Challenges I faced
 
 1. I struggled with my `YAML` because I forgot to put "output:" in my header. I ended up copying and pasting a header I made at an earlier date, and realized my mistake.\ **MY yaml also got me the first few times, I couldn't get the theme to work at first. -AJL**
 \
+
+>Yes... ALWAYS copy/paste for the first go at something. Modification can come later.
+
 2. I was struggling with adding the `cayman` theme to my document. I knit my document a few times and was failing to compile. I eventually pulled up an old stat homework and found the `prettydoc::pretty_html:` syntax.\ **Yes, this is the problem I was just referencing, I found this through googling. Try putting it where the html document is now instead of at the end and then put theme: cayman in a separate line because the theme still isn't showing up in the knit for me. -AJL**
 \
+
+>Glad you figured it out!  Google is your best friend when coding.
+
 3. I forgot the exact markdown syntax for inserting an image, so I looked it up and figured it out.\
 \
 4. I needed to check how `lower.tail` functioned to ensure that I was including 8 calls (i.e., is this equal to or greater or just greater). I had to adjust my code because I initally had q = 8; I changed q = 7. \
 \
+
+>Again... not sure this is correct. Would love to see the documentation.
+
 5. I forgot `hist()` and `plot()` had different arguments within the function. I had to take `xlab()` etc. and place within `hist()` argument.
+
+>Overall this looks good! You're clearly thinking through and looking up documentation to assess how to move forward, which is great. Aside from the misidentified monkey (never trust a colloquial species assignment... this is one case where google needs serious double-checking), this all is great. Also, I know I mentioned I only want to see the 6 homework-related files in the repo, but for ease of use I strongly recommend creating a project in which to house these files! Not sure if you erased it to be compliant, but it's definitely something you should be doing.
